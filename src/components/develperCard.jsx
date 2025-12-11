@@ -23,14 +23,14 @@ function DeveloperCard() {
               name: <span className="text-green-400">'Syed Imran M. Zaidi'</span>,
             </div>
             <div className="pl-4 text-slate-300">
-              role: <span className="text-green-400">'Full-Stack Dev'</span>,
+              role: <span className="text-green-400">'Software Engineer'</span>,
             </div>
             <div className="pl-4 text-slate-300">skills: [</div>
             <div className="pl-8 text-green-400">'JavaScript', 'Python',</div>
-            <div className="pl-8 text-green-400">'React', 'Node.js'</div>
+            <div className="pl-8 text-green-400">'React', 'Django'</div>
             <div className="pl-4 text-slate-300">],</div>
             <div className="pl-4 text-slate-300">
-              experience: <span className="text-orange-400">'2+ years'</span>,
+              experience: <span className="text-orange-400">'2 years'</span>,
             </div>
             <div className="pl-4 text-slate-300">
               available: <span className="text-orange-400">true</span>

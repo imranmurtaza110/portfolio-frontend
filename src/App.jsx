@@ -9,15 +9,18 @@ import Experience from "./components/experience";
 import Blog from "./components/blog";
 import Projects from "./components/projects";
 import Contact from "./components/contact";
+import CreateAdmin from "./components/createAdmin";
 import Footer from "./components/footer";
 import SectionDivider from "./components/sectionDivider";
 import CustomCursor from "./components/customCursor";
 
 function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isCreateAdminOpen, setIsCreateAdminOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
    const [cursorStyle, setCursorStyle] = useState("custom");
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [resumeUrl, setResumeUrl] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +29,59 @@ function App() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Fetch resume URL from backend API
+  useEffect(() => {
+    const fetchResumeUrl = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/uploads/active/resume/`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.file_url) {
+            // Construct full URL if it's relative
+            const url = data.file_url.startsWith('http') 
+              ? data.file_url 
+              : `${import.meta.env.VITE_API_URL}${data.file_url}`;
+            setResumeUrl(url);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching resume URL:", error);
+      }
+    };
+    fetchResumeUrl();
+  }, []);
+
+  // Check URL for admin creation access
+  useEffect(() => {
+    const checkUrl = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hash = window.location.hash;
+      
+      const hasQueryParam = urlParams.get('admin') === 'create';
+      const hasHash = hash === '#admin-create' || hash === 'admin-create';
+      
+      if (hasQueryParam || hasHash) {
+        console.log('Opening admin creation modal from URL');
+        setIsCreateAdminOpen(true);
+        // Clean URL after opening modal
+        setTimeout(() => {
+          window.history.replaceState({}, '', window.location.pathname);
+        }, 500);
+      }
+    };
+    
+    // Check immediately
+    checkUrl();
+    
+    // Also listen for hash changes (in case user navigates)
+    const handleHashChange = () => {
+      checkUrl();
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const scrollToTop = () => {
@@ -56,8 +112,12 @@ function App() {
         onToggleTheme={toggleTheme}
         onToggleCursor={toggleCursor}
         isCustomCursor={cursorStyle === "custom"}
+        resumeUrl={resumeUrl}
       />
-      <Home onContactClick={() => setIsContactOpen(true)} />
+      <Home 
+        onContactClick={() => setIsContactOpen(true)} 
+        resumeUrl={resumeUrl}
+      />
       <SectionDivider />
       <DeveloperCard />
       <SectionDivider />
@@ -71,6 +131,7 @@ function App() {
       <SectionDivider />
       <Projects />
       <Contact isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      <CreateAdmin isOpen={isCreateAdminOpen} onClose={() => setIsCreateAdminOpen(false)} />
       <SectionDivider />
       <Footer />
 

@@ -1,4 +1,67 @@
-function Home({ onContactClick }) {
+import { useState } from "react";
+
+function Home({ onContactClick, resumeUrl = "" }) {
+  const [downloadError, setDownloadError] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownloadResume = async () => {
+    setIsDownloading(true);
+    setDownloadError(null);
+
+    try {
+      // Use backend proxy endpoint to avoid CORS issues
+      const apiUrl = import.meta.env.VITE_API_URL;
+      
+      if (!apiUrl) {
+        throw new Error("API URL not configured. Please check environment variables.");
+      }
+
+      const downloadUrl = `${apiUrl}/api/uploads/download/resume/`;
+      console.log("Attempting to download from:", downloadUrl);
+      
+      // Try to fetch the file first to check if it's available
+      const response = await fetch(downloadUrl);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error("Resume file not found. Please contact the administrator.");
+        } else if (response.status >= 500) {
+          throw new Error("Server error. Please try again later.");
+        } else {
+          throw new Error(`Failed to download resume. Status: ${response.status}`);
+        }
+      }
+
+      // Get the blob from response
+      const blob = await response.blob();
+      
+      // Create blob URL and trigger download
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "resume.docx";
+      
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up blob URL
+      window.URL.revokeObjectURL(blobUrl);
+
+      // Clear error after successful download
+      setIsDownloading(false);
+    } catch (error) {
+      console.error("Error downloading resume:", error);
+      setDownloadError(
+        error.message || "Failed to download resume. Please check your connection and try again."
+      );
+      setIsDownloading(false);
+      
+      // Auto-hide error after 5 seconds
+      setTimeout(() => setDownloadError(null), 5000);
+    }
+  };
   return (
     <div className="bg-slate-900/95 text-white min-h-screen">
       <section
@@ -29,6 +92,28 @@ function Home({ onContactClick }) {
           with a focus on functionality, performance, and clean design.
         </p>
 
+        {/* Error Message */}
+        {downloadError && (
+          <div className="mb-4 px-4 py-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300 text-sm max-w-md">
+            <div className="flex items-center gap-2">
+              <svg
+                className="w-5 h-5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{downloadError}</span>
+            </div>
+          </div>
+        )}
+
         {/* Buttons */}
         <div className="flex flex-wrap gap-4 mb-8">
           <button
@@ -50,21 +135,42 @@ function Home({ onContactClick }) {
             Get In Touch
           </button>
 
-          <button className="inline-flex items-center gap-2 border border-slate-600 hover:bg-slate-800 px-6 h-10 rounded-md text-sm font-medium transition-all">
-            <svg
-              className="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 15V3"></path>
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <path d="m7 10 5 5 5-5"></path>
-            </svg>
-            Download CV
+          <button 
+            onClick={handleDownloadResume}
+            disabled={isDownloading}
+            className="inline-flex items-center gap-2 border border-slate-600 hover:bg-slate-800 px-6 h-10 rounded-md text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isDownloading ? (
+              <>
+                <svg
+                  className="w-4 h-4 animate-spin"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M21 12a9 9 0 11-6.219-8.56" />
+                </svg>
+                Downloading...
+              </>
+            ) : (
+              <>
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 15V3"></path>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <path d="m7 10 5 5 5-5"></path>
+                </svg>
+                Download CV
+              </>
+            )}
           </button>
         </div>
 
