@@ -177,14 +177,14 @@ function Home({ onContactClick, resumeUrl = "" }) {
         {/* Social Icons */}
         <div className="flex gap-6 text-slate-400 text-xl mb-12">
           <a
-            href="https://github.com"
+            href="https://github.com/imranmurtaza110/"
             className="hover:text-white transition"
             aria-label="GitHub"
           >
             <i className="fab fa-github"></i>
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/imranmurtaza110110/"
             className="hover:text-white transition"
             aria-label="LinkedIn"
           >
