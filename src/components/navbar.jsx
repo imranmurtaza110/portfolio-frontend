@@ -11,6 +11,7 @@ function Navbar({
   const isDark = theme === "dark";
   const [downloadError, setDownloadError] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleDownloadResume = async () => {
     setIsDownloading(true);
@@ -179,10 +180,63 @@ function Navbar({
             >
               <span>{isDark ? "🌙" : "☀️"}</span>
             </button>
-            <button className="rounded-lg border p-2 hover:bg-gray-800">☰</button>
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              className="rounded-lg border border-slate-600/60 bg-slate-900/60 p-2 text-sm hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              aria-label="Toggle navigation menu"
+            >
+              {isMobileMenuOpen ? "✕" : "☰"}
+            </button>
           </div>
         </div>
       </div>
+      {/* Mobile dropdown menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t border-slate-700/60 bg-slate-900/95">
+          <div className="mx-auto max-w-7xl px-6 py-3">
+            <ul className="space-y-2 text-sm font-nav">
+              {["Home", "Projects", "Skills", "Resume", "Blog", "Contact"].map(
+                (item) => (
+                  <li key={item}>
+                    {item === "Contact" ? (
+                      <button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          onContactClick();
+                        }}
+                        className="w-full text-left py-2 text-slate-100 hover:text-blue-400"
+                      >
+                        {item}
+                      </button>
+                    ) : item === "Resume" && resumeUrl ? (
+                      <button
+                        onClick={async () => {
+                          setIsMobileMenuOpen(false);
+                          await handleDownloadResume();
+                        }}
+                        disabled={isDownloading}
+                        className="w-full text-left py-2 text-slate-100 hover:text-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        title={isDownloading ? "Downloading..." : "Download Resume"}
+                      >
+                        {isDownloading ? "Downloading..." : item}
+                      </button>
+                    ) : (
+                      <a
+                        href={`#${item.toLowerCase()}`}
+                        className="block py-2 text-slate-100 hover:text-blue-400"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item}
+                      </a>
+                    )}
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

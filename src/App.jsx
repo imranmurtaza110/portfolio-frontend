@@ -1,6 +1,6 @@
 import "./index.css";
-import Navbar from "./components/navbar";
 import { useState, useEffect } from "react";
+import Navbar from "./components/navbar";
 import Home from "./components/home";
 import DeveloperCard from "./components/develperCard";
 import Skills from "./components/skill";
@@ -8,19 +8,69 @@ import Education from "./components/education";
 import Experience from "./components/experience";
 import Blog from "./components/blog";
 import Projects from "./components/projects";
-import Contact from "./components/contact";
 import CreateAdmin from "./components/createAdmin";
 import Footer from "./components/footer";
 import SectionDivider from "./components/sectionDivider";
 import CustomCursor from "./components/customCursor";
 
 function App() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
   const [isCreateAdminOpen, setIsCreateAdminOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
    const [cursorStyle, setCursorStyle] = useState("custom");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [resumeUrl, setResumeUrl] = useState("");
+
+  // Open LinkedIn with a pre-written message (copied to clipboard)
+  const handleLinkedInContact = async () => {
+    const name = "Imran";
+    const message = `Hi Syed, this is ${name} from your portfolio website.`;
+    const linkedInUrl = "https://www.linkedin.com/in/imranmurtaza110110/";
+
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(message);
+        alert(
+          "LinkedIn is opening in a new tab.\n\nThe message has been copied – just paste it into the chat."
+        );
+      } else {
+        alert(
+          "LinkedIn is opening in a new tab.\n\nYou can send this message:\n\n" +
+            message
+        );
+      }
+    } catch (err) {
+      console.debug("Failed to copy contact message:", err);
+      alert(
+        "LinkedIn is opening in a new tab.\n\nYou can send this message:\n\n" +
+          message
+      );
+    }
+
+    window.open(linkedInUrl, "_blank", "noopener,noreferrer");
+  };
+
+  // Keep server awake: ping health endpoint every 10 minutes
+  useEffect(() => {
+    const HEALTH_URL = `${import.meta.env.VITE_API_URL}/health/`;
+
+    const pingServer = async () => {
+      if (!navigator.onLine) return;
+      try {
+        await fetch(HEALTH_URL, { method: "GET", cache: "no-store" });
+      } catch (err) {
+        // Silently ignore errors – this is just a keep-alive
+        console.debug("Health ping failed (ignored):", err?.message || err);
+      }
+    };
+
+    // Initial ping on load
+    pingServer();
+
+    // Then every 10 minutes
+    const intervalId = setInterval(pingServer, 10 * 60 * 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,8 +146,6 @@ function App() {
     setCursorStyle((prev) => (prev === "custom" ? "default" : "custom"));
   };
 
-  console.log("isContactOpen:", isContactOpen);
-
   return (
     <div
       data-theme={theme}
@@ -107,7 +155,7 @@ function App() {
     >
       {cursorStyle === "custom" && <CustomCursor />}
       <Navbar
-        onContactClick={() => setIsContactOpen(true)}
+        onContactClick={handleLinkedInContact}
         theme={theme}
         onToggleTheme={toggleTheme}
         onToggleCursor={toggleCursor}
@@ -115,7 +163,7 @@ function App() {
         resumeUrl={resumeUrl}
       />
       <Home 
-        onContactClick={() => setIsContactOpen(true)} 
+        onContactClick={handleLinkedInContact} 
         resumeUrl={resumeUrl}
       />
       <SectionDivider />
@@ -130,7 +178,6 @@ function App() {
       <Blog />
       <SectionDivider />
       <Projects />
-      <Contact isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
       <CreateAdmin isOpen={isCreateAdminOpen} onClose={() => setIsCreateAdminOpen(false)} />
       <SectionDivider />
       <Footer />

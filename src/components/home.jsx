@@ -83,7 +83,7 @@ function Home({ onContactClick, resumeUrl = "" }) {
 
         {/* Role */}
         <h2 className="text-2xl lg:text-3xl text-slate-300 mb-2 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-          Full-Stack Software Developer
+          Software Developer
         </h2>
 
         {/* Description */}
