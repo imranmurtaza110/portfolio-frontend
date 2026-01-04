@@ -65,7 +65,7 @@ function Experience() {
           location: exp.location || "",
           work_mode: exp.work_mode || "remote",
           duration: formatDateRange(exp.start_date, exp.end_date),
-          details: exp.responsibilities || "",
+          responsibilities: Array.isArray(exp.responsibilities) ? exp.responsibilities : (exp.responsibilities ? [exp.responsibilities] : []),
           tech_stack: exp.tech_stack || [],
         }));
 
@@ -196,33 +196,58 @@ function Experience() {
 
                   {/* Card */}
                   <div className="group cursor-pointer rounded-2xl border border-slate-800/80 bg-gradient-to-br from-slate-900/90 via-slate-950 to-slate-950/95 p-[1px] shadow-sm ring-1 ring-slate-900/60 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/60 hover:ring-purple-500/40 hover:shadow-2xl hover:shadow-purple-500/25">
-                    <div className="flex flex-col gap-3 rounded-2xl bg-slate-950/95 p-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-                      <div className="space-y-1.5">
-                        <h3 className="bg-gradient-to-r from-purple-200 via-pink-200 to-indigo-200 bg-clip-text text-base font-semibold text-transparent md:text-lg">
-                          {exp.role}
-                        </h3>
-                        <p className="text-sm font-medium text-slate-200 md:text-base">
-                          {exp.company}
-                        </p>
-                        {exp.location && (
-                          <p className="text-xs text-slate-400 md:text-sm">
-                            {exp.location}
+                    <div className="rounded-2xl bg-slate-950/95 p-5 space-y-4">
+                      {/* Header Section */}
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div className="space-y-1.5">
+                          <h3 className="bg-gradient-to-r from-purple-200 via-pink-200 to-indigo-200 bg-clip-text text-base font-semibold text-transparent md:text-lg">
+                            {exp.role}
+                          </h3>
+                          <p className="text-sm font-medium text-slate-200 md:text-base">
+                            {exp.company}
                           </p>
-                        )}
-                        {exp.work_mode && (
-                          <p className="text-xs text-slate-400 md:text-sm capitalize">
-                            {exp.work_mode}
-                          </p>
-                        )}
-                        <p className="text-xs text-slate-400 md:text-sm">
-                          {exp.duration}
-                        </p>
+                          <div className="flex flex-wrap gap-3 text-xs text-slate-400 md:text-sm">
+                            {exp.location && <span>{exp.location}</span>}
+                            {exp.work_mode && <span className="capitalize">{exp.work_mode}</span>}
+                            <span>{exp.duration}</span>
+                          </div>
+                        </div>
                       </div>
 
-                      {exp.details && (
-                        <p className="mt-1 text-xs leading-relaxed text-slate-300 md:mt-0 md:text-sm">
-                          {exp.details}
-                        </p>
+                      {/* Responsibilities Section */}
+                      {exp.responsibilities && exp.responsibilities.length > 0 && (
+                        <div className="space-y-3 pt-3 border-t border-slate-800/50">
+                          <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Key Responsibilities
+                          </h4>
+                          <ul className="space-y-2.5">
+                            {exp.responsibilities.map((responsibility, idx) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-3 text-xs leading-relaxed text-slate-300 md:text-sm"
+                              >
+                                <span className="mt-1.5 flex-shrink-0 h-1.5 w-1.5 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 shadow-[0_0_8px_rgba(147,51,234,0.5)]" />
+                                <span className="flex-1">{responsibility}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      
+                      {/* Tech Stack Section */}
+                      {exp.tech_stack && exp.tech_stack.length > 0 && (
+                        <div className="pt-3 border-t border-slate-800/50">
+                          <div className="flex flex-wrap gap-2">
+                            {exp.tech_stack.map((tech, idx) => (
+                              <span
+                                key={idx}
+                                className="inline-flex items-center rounded-md border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-[10px] font-medium text-purple-200 md:text-xs"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>
