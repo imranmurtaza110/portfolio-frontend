@@ -65,7 +65,11 @@ function Experience() {
           location: exp.location || "",
           work_mode: exp.work_mode || "remote",
           duration: formatDateRange(exp.start_date, exp.end_date),
-          responsibilities: Array.isArray(exp.responsibilities) ? exp.responsibilities : (exp.responsibilities ? [exp.responsibilities] : []),
+          responsibilities: Array.isArray(exp.responsibilities)
+          ? exp.responsibilities
+          : (exp.responsibilities
+              ? String(exp.responsibilities).split(/\s*--\s*/).map(s => s.trim()).filter(Boolean)
+              : []),
           tech_stack: exp.tech_stack || [],
         }));
 
