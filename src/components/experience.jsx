@@ -68,7 +68,7 @@ function Experience() {
           responsibilities: Array.isArray(exp.responsibilities)
           ? exp.responsibilities
           : (exp.responsibilities
-              ? String(exp.responsibilities).split(/\s*--\s*/).map(s => s.trim()).filter(Boolean)
+              ? String(exp.responsibilities).split(/\s*-\s*/).map(s => s.trim()).filter(Boolean)
               : []),
           tech_stack: exp.tech_stack || [],
         }));
