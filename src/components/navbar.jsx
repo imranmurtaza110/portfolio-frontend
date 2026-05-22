@@ -171,6 +171,17 @@ function Navbar({
             )}
           </ul>
 
+          {/* WhatsApp Icon (desktop) */}
+          <a
+            href="https://wa.me/447761843752?text=Hi%2C%20I%20came%20across%20your%20portfolio%20and%20I%27m%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20that%20might%20be%20a%20great%20fit%20for%20you.%20Are%20you%20available%20for%20a%20quick%20chat%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center justify-center w-9 h-9 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 hover:bg-green-500/30 hover:text-green-300 transition-colors duration-200"
+            title="Chat on WhatsApp"
+          >
+            <i className="fab fa-whatsapp text-sm"></i>
+          </a>
+
           {/* Mobile: theme toggle + menu icon */}
           <div className="flex items-center gap-3 md:hidden">
             <button
@@ -180,6 +191,16 @@ function Navbar({
             >
               <span>{isDark ? "🌙" : "☀️"}</span>
             </button>
+            {/* WhatsApp Icon (mobile) */}
+            <a
+              href="https://wa.me/447761843752?text=Hi%2C%20I%20came%20across%20your%20portfolio%20and%20I%27m%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20that%20might%20be%20a%20great%20fit%20for%20you.%20Are%20you%20available%20for%20a%20quick%20chat%3F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 hover:bg-green-500/30 hover:text-green-300 transition-colors duration-200"
+              title="Chat on WhatsApp"
+            >
+              <i className="fab fa-whatsapp text-sm"></i>
+            </a>
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -233,6 +254,19 @@ function Navbar({
                   </li>
                 ),
               )}
+              {/* WhatsApp Link (mobile menu) */}
+              <li>
+                <a
+                  href="https://wa.me/447761843752?text=Hi%2C%20I%20came%20across%20your%20portfolio%20and%20I%27m%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20that%20might%20be%20a%20great%20fit%20for%20you.%20Are%20you%20available%20for%20a%20quick%20chat%3F"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 py-2 text-slate-100 hover:text-green-400"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <i className="fab fa-whatsapp"></i>
+                  WhatsApp
+                </a>
+              </li>
             </ul>
           </div>
         </div>

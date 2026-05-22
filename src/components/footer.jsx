@@ -82,6 +82,15 @@ function Footer() {
               >
                 <i className="fab fa-linkedin-in"></i>
               </a>
+              <a
+                href="https://wa.me/447761843752?text=Hi%2C%20I%20came%20across%20your%20portfolio%20and%20I%27m%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20that%20might%20be%20a%20great%20fit%20for%20you.%20Are%20you%20available%20for%20a%20quick%20chat%3F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-slate-800 hover:bg-green-600 transition-colors"
+                title="Chat on WhatsApp"
+              >
+                <i className="fab fa-whatsapp"></i>
+              </a>
             </div>
           </div>
         </div>

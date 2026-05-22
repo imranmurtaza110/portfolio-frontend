@@ -182,6 +182,18 @@ function App() {
       <SectionDivider />
       <Footer />
 
+      {/* WhatsApp Chat Button */}
+      <a
+        href="https://wa.me/447761843752?text=Hi%2C%20I%20came%20across%20your%20portfolio%20and%20I%27m%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20that%20might%20be%20a%20great%20fit%20for%20you.%20Are%20you%20available%20for%20a%20quick%20chat%3F"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed bottom-20 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 ring-1 ring-green-300/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-400"
+        title="Chat on WhatsApp"
+      >
+        <i className="fab fa-whatsapp text-xl"></i>
+      </a>
+
       {showScrollTop && (
         <button
           onClick={scrollToTop}
