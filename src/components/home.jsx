@@ -35,11 +35,21 @@ function Home({ onContactClick, resumeUrl = "" }) {
       // Get the blob from response
       const blob = await response.blob();
       
+      // Extract filename from Content-Disposition header
+      const contentDisposition = response.headers.get('content-disposition');
+      let filename = 'resume';
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);;
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1];
+        }
+      }
+      
       // Create blob URL and trigger download
       const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = blobUrl;
-      link.download = "resume.docx";
+      link.download = filename;
       
       // Append to body, click, and remove
       document.body.appendChild(link);
