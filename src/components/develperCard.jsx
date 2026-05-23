@@ -30,7 +30,7 @@ function DeveloperCard() {
             <div className="pl-8 text-green-400">'React', 'Django'</div>
             <div className="pl-4 text-slate-300">],</div>
             <div className="pl-4 text-slate-300">
-              experience: <span className="text-orange-400">'2 years'</span>,
+              experience: <span className="text-orange-400">'3 years'</span>,
             </div>
             <div className="pl-4 text-slate-300">
               available: <span className="text-orange-400">true</span>
